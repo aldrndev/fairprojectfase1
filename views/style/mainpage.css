@@ -113,3 +113,44 @@ nav a:hover {
 .navbar-right {
   margin-left: auto;
 }
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.search-container form {
+  display: flex;
+  background-color: #fff;
+  border-radius: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.search-container input[type='text'] {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px 0 0 25px;
+  flex-grow: 1;
+  outline: none;
+}
+
+.search-container button {
+  padding: 10px 15px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 0 25px 25px 0;
+  transition: background-color 0.3s;
+}
+
+.search-container button:hover {
+  background-color: #555;
+}

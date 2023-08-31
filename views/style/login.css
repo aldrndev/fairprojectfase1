@@ -92,3 +92,8 @@ p.registration a {
 p.registration a:hover {
   text-decoration: underline;
 }
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}

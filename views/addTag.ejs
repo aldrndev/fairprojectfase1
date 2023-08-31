@@ -25,6 +25,10 @@
       </header>
 
       <div class="content">
+        <% if (error) { %> <% error = error.split(',') %> <% error.forEach(el=>
+        { %>
+        <p class="error-message"><%= el%></p>
+        <% })} %>
         <form action="/tags/add" method="post" class="form">
           <div class="form-group">
             <label for="name" class="form__label">Tag Name</label

@@ -25,6 +25,17 @@
     </h2>
     <br />
     <div class="div2">
+      <div class="search-container">
+        <form action="/posts" method="get">
+          <input
+            type="text"
+            placeholder="Search for a post by title"
+            name="query"
+          />
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <br />
       <table class="table" border="1">
         <thead>
           <tr class="tr">
@@ -47,11 +58,11 @@
               />
             </td>
             <td>
-              <a href="/posts/<%= post.id %>/detail"
-                ><button class="button">Post Detail</button></a
-              >
               <a href="/posts/add"
                 ><button class="button" type="button">Add New Post</button></a
+              >
+              <a href="/posts/<%= post.id %>/detail"
+                ><button class="button">Post Detail</button></a
               >
 
               <a href="/tags"

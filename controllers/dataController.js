@@ -1,26 +1,47 @@
 const { Post, Profile, Tag, User } = require('../models');
 const formatDate = require('../helpers/formatDate');
+const { Op } = require('sequelize');
 
 class DataController {
   static showPost(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
+
     let currentUser;
+    let searchQuery = req.query.query;
+
     User.findOne({
       where: { id: req.session.user.id },
       include: Profile,
     })
       .then((user) => {
         currentUser = user;
-        return Post.findAll({
-          include: [
-            {
-              model: User,
-              include: Profile,
+
+        if (searchQuery) {
+          return Post.findAll({
+            where: {
+              title: {
+                [Op.iLike]: `%${searchQuery}%`,
+              },
             },
-          ],
-        });
+            include: [
+              {
+                model: User,
+                include: Profile,
+              },
+            ],
+          });
+        } else {
+          return Post.findAll({
+            include: [
+              {
+                model: User,
+                include: Profile,
+              },
+            ],
+          });
+        }
       })
       .then((posts) => {
         res.render('showPosts', { posts, user: currentUser });
@@ -31,9 +52,11 @@ class DataController {
   }
 
   static addPostForm(req, res) {
+    const { error } = req.query;
+
     Tag.findAll()
       .then((tags) => {
-        res.render('addPost', { tags });
+        res.render('addPost', { tags, error });
       })
       .catch((err) => {
         res.send(err);
@@ -42,7 +65,7 @@ class DataController {
 
   static addPost(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
 
     const { title, content, imgUrl, tags } = req.body;
@@ -61,13 +84,15 @@ class DataController {
         res.redirect('/posts');
       })
       .catch((err) => {
+        if ((err.name = 'SequelizeValidationErrors'))
+          return res.redirect(`/posts/add?error=${err.message}`);
         res.send(err);
       });
   }
 
   static showTags(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
 
     Tag.findAll()
@@ -80,12 +105,13 @@ class DataController {
   }
 
   static addTagForm(req, res) {
-    res.render('addTag');
+    const { error } = req.query;
+    res.render('addTag', { error });
   }
 
   static addTag(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
     const { name } = req.body;
 
@@ -94,17 +120,19 @@ class DataController {
         res.redirect('/tags'); // Setelah tag berhasil ditambahkan, redirect ke halaman daftar tag
       })
       .catch((err) => {
-        res.send('Terjadi kesalahan saat mencoba menambahkan tag baru.');
+        if ((err.name = 'SequelizeValidationErrors'))
+          return res.redirect(`/tags/add?error=${err.message}`);
+        res.send(err);
       });
   }
 
   static editPostForm(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
     const postId = req.params.id;
     const loggedInUserId = req.session.user.id; // ID pengguna yang saat ini logged in
-
+    const { error } = req.query;
     let currentPost;
 
     Post.findByPk(postId, {
@@ -122,20 +150,24 @@ class DataController {
       })
       .then((tags) => {
         // Render template dengan post dan tags
-        res.render('editPost', { post: currentPost, tags });
+        res.render('editPost', { post: currentPost, tags, error });
       })
       .catch((err) => {
-        if (err.message === 'Unauthorized') {
-          res.send('Anda tidak memiliki hak untuk mengedit postingan ini.');
-        } else {
-          res.send('Terjadi kesalahan saat memproses permintaan Anda.');
-        }
+        if (err.message === 'Unauthorized')
+          return res.redirect(
+            `/post/${postId}/edit?error='Tidak memiliki hak untuk mengedit post ini'`
+          );
+
+        if ((err.name = 'SequelizeValidationErrors'))
+          return res.redirect(`/tags/add?error=${err.message}`);
+
+        res.send(err);
       });
   }
 
   static editPost(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
     const postId = req.params.id;
     const loggedInUserId = req.session.user.id;
@@ -165,17 +197,19 @@ class DataController {
         res.redirect(`/posts/${postId}/detail`); // Anda dapat mengalihkan ke halaman tampilan post atau ke mana pun yang Anda inginkan
       })
       .catch((err) => {
-        if (err.message === 'Unauthorized') {
-          res.send('Anda tidak memiliki hak untuk mengedit postingan ini.');
-        } else {
-          res.send('Terjadi kesalahan saat memproses permintaan Anda.');
-        }
+        if (err.message === 'Unauthorized')
+          return res.redirect(
+            `/post/${currentPost.id}/edit?error='Tidak memiliki hak untuk mengedit post ini'`
+          );
+        if ((err.name = 'SequelizeValidationErrors'))
+          return res.redirect(`/tags/add?error=${err.message}`);
+        res.send(err);
       });
   }
 
   static showPostDetail(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
     const postId = req.params.id;
 
@@ -196,7 +230,7 @@ class DataController {
 
   static deletePost(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
     const postId = req.params.id;
     const loggedInUserId = req.session.user.id;
@@ -209,7 +243,7 @@ class DataController {
           res.redirect('/posts');
         })
         .catch((err) => {
-          res.send('Terjadi kesalahan saat memproses permintaan Anda.');
+          res.send(err);
         });
     } else {
       // Jika bukan admin, pastikan bahwa post memang milik pengguna yang sedang masuk
@@ -226,14 +260,14 @@ class DataController {
           res.redirect('/posts');
         })
         .catch((err) => {
-          res.send('Terjadi kesalahan saat memproses permintaan Anda.');
+          res.send(err);
         });
     }
   }
 
   static editTagForm(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
     if (req.session.user && req.session.user.role === 'admin') {
       // Implementasi form edit untuk tag
@@ -251,7 +285,7 @@ class DataController {
 
   static editTag(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
     if (req.session.user && req.session.user.role === 'admin') {
       // Implementasi logika untuk mengedit tag
@@ -275,7 +309,7 @@ class DataController {
 
   static deleteTag(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
     const { id } = req.params;
     if (req.session.user && req.session.user.role === 'admin') {
@@ -297,7 +331,7 @@ class DataController {
 
   static profile(req, res) {
     if (!req.isAuthenticated) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
 
     const userId = req.session.user.id;

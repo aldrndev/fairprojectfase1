@@ -15,13 +15,11 @@ const loginLimiter = rateLimit({
   },
 });
 
-router.get('/', UserController.home);
-
 router.get('/register', UserController.registerForm);
 router.post('/register', UserController.register);
 
-router.get('/login', UserController.loginForm);
-router.post('/login', loginLimiter, UserController.login);
+router.get('/', UserController.loginForm);
+router.post('/', loginLimiter, UserController.login);
 
 router.get('/logout', UserController.logout);
 

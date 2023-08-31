@@ -104,3 +104,8 @@ nav a:hover {
 .navbar-right {
   margin-left: auto;
 }
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}

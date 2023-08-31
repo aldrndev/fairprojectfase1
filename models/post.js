@@ -42,7 +42,18 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      imgUrl: DataTypes.STRING,
+      imgUrl: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'imgUrl cant empty',
+          },
+          notNull: {
+            msg: 'imgUrl cant empty',
+          },
+        },
+      },
       UserId: DataTypes.INTEGER,
     },
     {

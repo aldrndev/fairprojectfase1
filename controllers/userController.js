@@ -1,12 +1,9 @@
 const { Profile, User } = require('../models');
 
 class UserController {
-  static home(req, res) {
-    res.render('home');
-  }
-
   static registerForm(req, res) {
-    res.render('register');
+    const { error } = req.query;
+    res.render('register', { error });
   }
 
   static register(req, res) {
@@ -15,7 +12,6 @@ class UserController {
     User.findOne({ where: { email: email } })
       .then((user) => {
         if (user) {
-          // Email sudah ada dalam database
           throw new Error('Email already registered');
         }
         return Profile.create({
@@ -33,15 +29,22 @@ class UserController {
         });
       })
       .then(() => {
-        res.redirect('/login');
+        res.redirect('/');
       })
       .catch((err) => {
-        res.send(err.message); // Menampilkan pesan kesalahan dari Error yang dilempar
+        const error = 'Email already registered';
+        if (err.message === error)
+          return res.redirect(`/register?error=${error}`);
+        if ((err.name = 'SequelizeValidationErrors'))
+          return res.redirect(`/register?error=${err.message}`);
+        res.send(err); // Menampilkan pesan kesalahan dari Error yang dilempar
       });
   }
 
   static loginForm(req, res) {
-    res.render('home');
+    const { error } = req.query;
+
+    res.render('home', { error });
   }
 
   static login(req, res) {
@@ -50,8 +53,7 @@ class UserController {
     User.findByEmail(email)
       .then((user) => {
         if (!user) {
-          res.send('User tidak ditemukan.');
-          return;
+          throw new Error('Email tidak ditemukan.');
         }
         // Jika user ditemukan, verifikasi password
         if (user.checkPassword(password)) {
@@ -69,15 +71,29 @@ class UserController {
 
           // Berdasarkan hitungan kesalahan, tampilkan pesan yang sesuai
           if (req.session.errorCount >= 3) {
-            res.send(
+            throw new Error(
               'Terlalu banyak upaya login dengan user ini, coba lagi dalam 5 menit.'
             );
           } else {
-            res.send('Email atau kata sandi salah.');
+            throw new Error('Email atau kata sandi salah.');
           }
         }
       })
       .catch((err) => {
+        const errorEmail = 'Email tidak ditemukan.';
+        const errorLimit =
+          'Terlalu banyak upaya login dengan user ini, coba lagi dalam 5 menit.';
+        const errorValidate = 'Email atau kata sandi salah.';
+        if (err.message === errorEmail)
+          return res.redirect(`/?error=${errorEmail}`);
+        if (err.message === errorLimit)
+          return res.redirect(`/?error=${errorLimit}`);
+        if (err.message === errorValidate)
+          return res.redirect(`/?error=${errorValidate}`);
+
+        if ((err.name = 'SequelizeValidationErrors'))
+          return res.redirect(`/?error=${err.message}`);
+
         res.send(err);
       });
   }
@@ -91,7 +107,7 @@ class UserController {
       }
 
       // Arahkan pengguna ke halaman login atau awal
-      res.redirect('/login');
+      res.redirect('/');
     });
   }
 }

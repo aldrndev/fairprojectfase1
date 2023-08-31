@@ -1,6 +1,6 @@
 function isAuthenticated(req, res, next) {
   if (!req.session || !req.session.user) {
-    res.redirect('/login');
+    res.redirect('/');
     req.isAuthenticated = false;
   } else {
     req.isAuthenticated = true;
