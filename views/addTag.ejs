@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Tag</title>
+    <link rel="stylesheet" href="/style/newtag.css" />
+  </head>
+
+  <body>
+    <nav>
+      <ul class="navbar-left">
+        <li><a href="/posts">Home</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/posts">Posts</a></li>
+      </ul>
+      <ul class="navbar-right">
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+    <div class="container">
+      <header class="header">
+        <h1 class="header__title">Add New Tag</h1>
+      </header>
+
+      <div class="content">
+        <form action="/tags/add" method="post" class="form">
+          <div class="form-group">
+            <label for="name" class="form__label">Tag Name</label
+            ><br /><br /><br />
+            <input type="text" name="name" class="form__input" />
+          </div>
+          <button class="form__button" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

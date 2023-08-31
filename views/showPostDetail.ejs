@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Show Post Detail</title>
+    <link rel="stylesheet" href="/style/style.css" />
+  </head>
+  <body>
+    <nav>
+      <ul class="navbar-left">
+        <li><a href="/posts">Home</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/posts">Posts</a></li>
+      </ul>
+      <ul class="navbar-right">
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+    <br />
+    <div class="center-content">
+      <h1>Show Post Detail</h1>
+      <% if (currentUser && (currentUser.id === post.User.id || currentUser.role
+      === 'admin')) { %>
+      <a href="/posts/<%= post.id %>/edit"><button>Edit Post</button></a>
+      <a href="/posts/<%= post.id %>/delete"><button>Delete Post</button></a>
+      <% } %>
+      <p><img src="<%= post.imgUrl %>" alt="broken-image" /></p>
+      <p><strong>Title:</strong> <%= post.title %></p>
+      <p><strong>Posted By:</strong> <%= post.User.Profile.fullName %></p>
+      <p><strong>Posted Date:</strong> <%= formatDate(post.createdAt) %></p>
+      <p><strong>Tags:</strong></p>
+      <% post.Tags.forEach(tag => { %> #️⃣ <%= tag.name %> <% }); %>
+      <p><strong>Content:</strong></p>
+      <p><%= post.content %></p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Show Post Detail</title>
+    <link rel="stylesheet" href="/style/style.css" />
+  </head>
+  <body>
+    <nav>
+      <ul class="navbar-left">
+        <li><a href="/posts">Home</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/posts">Posts</a></li>
+      </ul>
+      <ul class="navbar-right">
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+    <br />
+    <div class="center-content">
+      <h1>Your Profile Data</h1>
+      <p><strong>Full Name:</strong> <%= profile.Profile.fullName %></p>
+      <p><strong>Age:</strong> <%= profile.Profile.age %></p>
+      <p><strong>Phone Number:</strong> <%= profile.Profile.phone %></p>
+      <p><strong>Country:</strong> <%= profile.Profile.country %></p>
+      <p>
+        <strong>Profile Created:</strong> <%=
+        formatDate(profile.Profile.createdAt) %>
+      </p>
+      <p><strong>Role:</strong> <%= profile.role %></p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+[
+  {
+    "email": "rizal@gmail.com",
+    "password": "qwer123",
+    "role": "user",
+    "ProfileId": 1
+  },
+  {
+    "email": "aldrin@gmail.com",
+    "password": "qwer123",
+    "role": "admin",
+    "ProfileId": 2
+  },
+  {
+    "email": "arif@gmail.com",
+    "password": "qwer123",
+    "role": "user",
+    "ProfileId": 3
+  },
+  {
+    "email": "nico@gmail.com",
+    "password": "qwer123",
+    "role": "user",
+    "ProfileId": 4
+  },
+  {
+    "email": "firdaus@gmail.com",
+    "password": "qwer123",
+    "role": "admin",
+    "ProfileId": 5
+  }
+]

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style/mainpage.css" />
+  </head>
+  <body>
+    <nav>
+      <ul class="navbar-left">
+        <li><a href="/posts">Home</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/posts">Posts</a></li>
+      </ul>
+      <ul class="navbar-right">
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+    <h1 class="h1">Dashboard</h1>
+    <h2 class="h2">
+      Welcome to your dashboard <%= user.Profile.fullName %>, You are logged in
+      as <%= user.role %> !!
+    </h2>
+    <br />
+    <div class="div2">
+      <table class="table" border="1">
+        <thead>
+          <tr class="tr">
+            <th class="th">Title</th>
+            <th class="th">Posted By</th>
+            <th class="th">Image Post</th>
+            <th class="th">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% posts.forEach(post => { %>
+          <tr>
+            <td><%= post.title %></td>
+            <td><%= post.User.Profile.fullName %></td>
+            <td>
+              <img
+                src="<%= post.imgUrl %>"
+                alt="broken-image"
+                style="width: 50px; height: 50px"
+              />
+            </td>
+            <td>
+              <a href="/posts/<%= post.id %>/detail"
+                ><button class="button">Post Detail</button></a
+              >
+              <a href="/posts/add"
+                ><button class="button" type="button">Add New Post</button></a
+              >
+
+              <a href="/tags"
+                ><button class="button" type="button">
+                  Check List Tags
+                </button></a
+              >
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <br />
+    </div>
+  </body>
+</html>

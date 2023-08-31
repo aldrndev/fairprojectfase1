@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration Page</title>
+    <link rel="stylesheet" href="/style/registration.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <h1 class="h1">Registration Page</h1>
+      </header>
+      <br />
+
+      <form action="/register" class="form" method="post">
+        <div class="input-container">
+          <label for="email" class="label">E-mail</label>
+          <input type="email" class="input" name="email" id="email" />
+        </div>
+        <div class="input-container">
+          <label for="password" class="label">Password</label>
+          <input type="password" class="input" name="password" id="password" />
+        </div>
+        <div class="input-container">
+          <label for="fullName" class="label">Full Name</label>
+          <input type="text" class="input" name="fullName" id="fullName" />
+        </div>
+        <div class="input-container">
+          <label for="age" class="label">Age</label>
+          <input type="number" class="input" name="age" id="age" />
+        </div>
+        <div class="input-container">
+          <label for="phone" class="label">Phone Number</label>
+          <input type="text" class="input" name="phone" id="phonenumber" />
+        </div>
+        <div class="input-container">
+          <label for="country" class="label">Country</label>
+          <input type="text" class="input" name="country" id="phonenumber" />
+        </div>
+        <button type="submit" class="button">Register Now</button>
+      </form>
+    </div>
+  </body>
+</html>

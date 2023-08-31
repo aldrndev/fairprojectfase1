@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Hari hari ngoding",
+    "content": "Hari ini gue sibuk banget ngoding guys, banyak tugas juga... lelah hayatii !!!",
+    "imgUrl": "https://picsum.photos/id/237/200/300",
+    "UserId": 1
+  },
+  {
+    "title": "Live Code 3",
+    "content": "Duh hari ini live code 3, wish me luck deh !! ganbatte",
+    "imgUrl": "https://picsum.photos/id/1005/200/300",
+    "UserId": 2
+  },
+  {
+    "title": "Pair Project",
+    "content": "Cepet banget deh udah week 4 aja !! sekarang mau buat pair project dulu nihhh !! semangatttt",
+    "imgUrl": "https://picsum.photos/id/1025/200/300",
+    "UserId": 3
+  },
+  {
+    "title": "Makan Siang",
+    "content": "Guys hari ini kalian makan siang sama apa?",
+    "imgUrl": "https://picsum.photos/id/1035/200/300",
+    "UserId": 4
+  },
+  {
+    "title": "Travel",
+    "content": "Duh bingung nih ngoding terus, pingin jalan jalan kemana ya yang enak ??",
+    "imgUrl": "https://picsum.photos/id/1045/200/300",
+    "UserId": 5
+  }
+]

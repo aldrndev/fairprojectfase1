@@ -1,0 +1,32 @@
+[
+  {
+    "fullName": "Afrizal Anwar",
+    "age": 20,
+    "phone": "912-808-0632",
+    "country": "Philippines"
+  },
+  {
+    "fullName": "Aldrin Mursidi",
+    "age": 15,
+    "phone": "602-476-0523",
+    "country": "Australia"
+  },
+  {
+    "fullName": "Arif Permana",
+    "age": 25,
+    "phone": "614-135-6224",
+    "country": "Thailand"
+  },
+  {
+    "fullName": "Nicodemus",
+    "age": 22,
+    "phone": "621-990-7987",
+    "country": "United States"
+  },
+  {
+    "fullName": "Muhammad Firdaus",
+    "age": 19,
+    "phone": "301-813-5579",
+    "country": "China"
+  }
+]

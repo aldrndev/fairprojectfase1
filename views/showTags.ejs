@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tags List</title>
+    <link rel="stylesheet" href="/style/mainpage.css" />
+  </head>
+  <body>
+    <nav>
+      <ul class="navbar-left">
+        <li><a href="/posts">Home</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/posts">Posts</a></li>
+      </ul>
+      <ul class="navbar-right">
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+
+    <h1 class="h1">Tags List</h1>
+
+    <div class="div2">
+      <% if (userRole === 'admin') { %>
+      <a href="/tags/add"
+        ><button class="button" type="button">Add New Tag</button></a
+      >
+      <% } %>
+      <br /><br />
+      <table class="table" border="1">
+        <thead>
+          <tr class="tr">
+            <th class="th">Tag Name</th>
+            <% if (userRole === 'admin') { %>
+            <th class="th">Action</th>
+            <% } %>
+          </tr>
+        </thead>
+        <tbody>
+          <% tags.forEach(tag => { %>
+          <tr>
+            <td><%= tag.name %></td>
+            <% if (userRole === 'admin') { %>
+            <td>
+              <a href="/tags/<%= tag.id %>/edit"><button>Edit</button></a>
+              <a href="/tags/<%= tag.id %>/delete"><button>Delete</button></a>
+            </td>
+
+            <% } %>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <br />
+    </div>
+  </body>
+</html>
