@@ -37,7 +37,7 @@ class UserController {
           return res.redirect(`/register?error=${error}`);
         if ((err.name = 'SequelizeValidationErrors'))
           return res.redirect(`/register?error=${err.message}`);
-        res.send(err); // Menampilkan pesan kesalahan dari Error yang dilempar
+        res.send(err);
       });
   }
 
@@ -62,7 +62,7 @@ class UserController {
           req.session.user = {
             id: user.id,
             email: user.email,
-            role: user.role, // Pastikan model Anda memiliki kolom 'role'
+            role: user.role,
           };
           res.redirect('/posts');
         } else {
@@ -101,8 +101,7 @@ class UserController {
   static logout(req, res) {
     req.session.destroy((err) => {
       if (err) {
-        // Tangani error saat menghancurkan sesi
-        res.send('Terjadi kesalahan saat logout');
+        res.send(err);
         return;
       }
 

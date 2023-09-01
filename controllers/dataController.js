@@ -4,10 +4,6 @@ const { Op } = require('sequelize');
 
 class DataController {
   static showPost(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
-
     let currentUser;
     let searchQuery = req.query.query;
 
@@ -64,10 +60,6 @@ class DataController {
   }
 
   static addPost(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
-
     const { title, content, imgUrl, tags } = req.body;
     const userId = req.session.user.id;
 
@@ -91,10 +83,6 @@ class DataController {
   }
 
   static showTags(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
-
     Tag.findAll()
       .then((tags) => {
         res.render('showTags', { tags, userRole: req.session.user.role });
@@ -110,9 +98,6 @@ class DataController {
   }
 
   static addTag(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
     const { name } = req.body;
 
     Tag.create({ name })
@@ -127,9 +112,6 @@ class DataController {
   }
 
   static editPostForm(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
     const postId = req.params.id;
     const loggedInUserId = req.session.user.id; // ID pengguna yang saat ini logged in
     const { error } = req.query;
@@ -143,13 +125,12 @@ class DataController {
           post.UserId !== loggedInUserId &&
           req.session.user.role !== 'admin'
         ) {
-          throw new Error('Unauthorized'); // Jika pengguna tidak memiliki hak, lemparkan error
+          throw new Error('Unauthorized'); // Jika pengguna tidak memiliki hak
         }
         currentPost = post;
         return Tag.findAll(); // Ambil semua tags dari database
       })
       .then((tags) => {
-        // Render template dengan post dan tags
         res.render('editPost', { post: currentPost, tags, error });
       })
       .catch((err) => {
@@ -166,13 +147,10 @@ class DataController {
   }
 
   static editPost(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
     const postId = req.params.id;
     const loggedInUserId = req.session.user.id;
 
-    const { title, content, imgUrl, tags } = req.body; // Assumed that tags contains the selected tag IDs.
+    const { title, content, imgUrl, tags } = req.body;
 
     Post.findByPk(postId)
       .then((post) => {
@@ -180,21 +158,19 @@ class DataController {
           post.UserId !== loggedInUserId &&
           req.session.user.role !== 'admin'
         ) {
-          throw new Error('Unauthorized'); // Jika pengguna tidak memiliki hak, lemparkan error
+          throw new Error('Unauthorized'); // Jika pengguna tidak memiliki hak
         }
         return post.update({
           title,
           content,
           imgUrl,
-          // Anda dapat menambahkan field lain yang Anda ingin perbarui
         });
       })
       .then((updatedPost) => {
-        // Now, set the tags based on the form's selection
-        return updatedPost.setTags(tags); // This will update the PostTags table
+        return updatedPost.setTags(tags);
       })
       .then(() => {
-        res.redirect(`/posts/${postId}/detail`); // Anda dapat mengalihkan ke halaman tampilan post atau ke mana pun yang Anda inginkan
+        res.redirect(`/posts/${postId}/detail`);
       })
       .catch((err) => {
         if (err.message === 'Unauthorized')
@@ -208,9 +184,6 @@ class DataController {
   }
 
   static showPostDetail(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
     const postId = req.params.id;
 
     Post.findByPk(postId, {
@@ -229,9 +202,6 @@ class DataController {
   }
 
   static deletePost(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
     const postId = req.params.id;
     const loggedInUserId = req.session.user.id;
     const loggedInUserRole = req.session.user.role; // pastikan role pengguna ada dalam session saat login
@@ -266,11 +236,7 @@ class DataController {
   }
 
   static editTagForm(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
     if (req.session.user && req.session.user.role === 'admin') {
-      // Implementasi form edit untuk tag
       Tag.findByPk(req.params.id)
         .then((tag) => {
           res.render('editTag', { tag });
@@ -284,11 +250,7 @@ class DataController {
   }
 
   static editTag(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
     if (req.session.user && req.session.user.role === 'admin') {
-      // Implementasi logika untuk mengedit tag
       const { name } = req.body;
       Tag.update(
         { name },
@@ -308,9 +270,6 @@ class DataController {
   }
 
   static deleteTag(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
     const { id } = req.params;
     if (req.session.user && req.session.user.role === 'admin') {
       Tag.destroy({
@@ -330,17 +289,13 @@ class DataController {
   }
 
   static profile(req, res) {
-    if (!req.isAuthenticated) {
-      return res.redirect('/');
-    }
-
     const userId = req.session.user.id;
 
     User.findByPk(userId, {
       include: Profile,
     })
       .then((user) => {
-        res.render('profile', { profile: user, formatDate }); // 'profile' adalah nama file ejs Anda
+        res.render('profile', { profile: user, formatDate });
       })
       .catch((err) => {
         res.send('Terjadi kesalahan saat memproses permintaan Anda.');
